@@ -154,6 +154,37 @@ export class SchemaManager {
       CREATE INDEX IF NOT EXISTS idx_clients_token 
       ON clients(token)
     `);
+
+    // 添加更多性能优化索引
+    db.exec(`
+      CREATE INDEX IF NOT EXISTS idx_projects_created_at 
+      ON projects(created_at DESC)
+    `);
+
+    db.exec(`
+      CREATE INDEX IF NOT EXISTS idx_server_projects_server_id 
+      ON server_projects(server_id)
+    `);
+
+    db.exec(`
+      CREATE INDEX IF NOT EXISTS idx_server_projects_project_id 
+      ON server_projects(project_id)
+    `);
+
+    db.exec(`
+      CREATE INDEX IF NOT EXISTS idx_servers_created_at 
+      ON servers(created_at DESC)
+    `);
+
+    db.exec(`
+      CREATE INDEX IF NOT EXISTS idx_workflows_created_at 
+      ON workflows(created_at DESC)
+    `);
+
+    db.exec(`
+      CREATE INDEX IF NOT EXISTS idx_hook_modules_name 
+      ON hook_modules(name)
+    `);
   }
 
   /**

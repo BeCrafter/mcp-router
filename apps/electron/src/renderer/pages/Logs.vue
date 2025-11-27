@@ -78,6 +78,7 @@
         <Card
           v-for="log in logsStore.filteredLogs"
           :key="log.id"
+          v-memo="[log.id, log.status, expandedLogs.has(log.id)]"
           class="log-item"
           :class="{ 'log-error': log.status === 'error' }"
         >

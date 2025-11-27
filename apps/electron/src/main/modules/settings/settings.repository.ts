@@ -5,10 +5,33 @@ import type { Settings } from '@mcp_router/shared/types';
 /**
  * Settings Repository
  * 管理应用设置的数据库操作
+ * 注意：settings表使用key作为主键，不是id
  */
-export class SettingsRepository extends BaseRepository<{ key: string; value: string }> {
+export class SettingsRepository extends BaseRepository<{ key: string; value: string; id: string }> {
   constructor(db: Database.Database) {
     super(db, 'settings');
+  }
+
+  /**
+   * 重写findById，使用key而不是id
+   */
+  findById(key: string): { key: string; value: string; id: string } | null {
+    const stmt = this.db.prepare(`SELECT * FROM ${this.tableName} WHERE key = ?`);
+    const result = stmt.get(key) as { key: string; value: string } | undefined;
+    if (!result) {
+      return null;
+    }
+    // 为了兼容BaseRepository的类型，添加id字段（使用key作为id）
+    return { ...result, id: result.key };
+  }
+
+  /**
+   * 重写delete，使用key而不是id
+   */
+  delete(key: string): boolean {
+    const stmt = this.db.prepare(`DELETE FROM ${this.tableName} WHERE key = ?`);
+    const result = stmt.run(key);
+    return result.changes > 0;
   }
 
   /**
@@ -54,11 +77,13 @@ export class SettingsRepository extends BaseRepository<{ key: string; value: str
     const existing = this.findById(key);
 
     if (existing) {
-      // 使用SQL直接更新，避免BaseRepository的update方法问题
+      // 使用SQL直接更新
       const stmt = this.db.prepare('UPDATE settings SET value = ?, updated_at = strftime(\'%s\', \'now\') WHERE key = ?');
       stmt.run(valueStr, key);
     } else {
-      this.create({ key, value: valueStr });
+      // 创建新设置
+      const stmt = this.db.prepare('INSERT INTO settings (key, value, updated_at) VALUES (?, ?, strftime(\'%s\', \'now\'))');
+      stmt.run(key, valueStr);
     }
   }
 

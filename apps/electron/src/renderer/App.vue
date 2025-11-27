@@ -6,12 +6,16 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { RouterView } from 'vue-router';
 import { useTheme } from './composables/useTheme';
 import ToastContainer from './components/ToastContainer.vue';
 
 // 初始化主题
-useTheme();
+const { initTheme } = useTheme();
+onMounted(() => {
+  initTheme();
+});
 </script>
 
 <style>

@@ -1,4 +1,5 @@
-import { ipcMain, IpcMainInvokeEvent } from 'electron';
+import { ipcMain, type IpcMainInvokeEvent } from 'electron';
+import { handleError, logError, type AppError } from '../errors';
 
 /**
  * IPC Handler函数类型
@@ -37,9 +38,10 @@ export class IpcHandlerRegistry {
       try {
         return await handler(event, ...args);
       } catch (error) {
-        // 统一错误处理
-        console.error(`IPC Handler错误 [${channel}]:`, error);
-        throw error;
+        // 统一错误处理和日志记录
+        const appError = handleError(error);
+        logError(appError, { channel, args });
+        throw appError;
       }
     };
 

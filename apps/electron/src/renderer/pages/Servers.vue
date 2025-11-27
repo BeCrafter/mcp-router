@@ -13,7 +13,12 @@
         <Button @click="showAddForm = true">添加第一个服务器</Button>
       </div>
       <div v-else class="server-list">
-        <Card v-for="server in serversStore.servers" :key="server.id" class="server-card">
+        <Card 
+          v-for="server in serversStore.servers" 
+          :key="server.id" 
+          v-memo="[server.id, server.enabled]"
+          class="server-card"
+        >
           <div class="server-header">
             <div>
               <h3 class="server-name">{{ server.name }}</h3>
