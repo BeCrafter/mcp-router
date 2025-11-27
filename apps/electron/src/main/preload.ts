@@ -43,18 +43,44 @@ const platformAPI: IPlatformAPI = {
     revokeToken: async (appId: string) => ipcRenderer.invoke('apps:revokeToken', appId),
   },
   logs: {
-    list: async (params?: { startDate?: Date; endDate?: Date; serverId?: string }) =>
-      ipcRenderer.invoke('logs:list', params),
-    search: async (query: string) => ipcRenderer.invoke('logs:search', query),
+    query: async (options?: {
+      startDate?: string;
+      endDate?: string;
+      serverId?: string;
+      requestType?: string;
+      status?: 'success' | 'error';
+    }) => ipcRenderer.invoke('logs:query', options),
+    read: async (params: { date: string }) => ipcRenderer.invoke('logs:read', params),
+    cleanup: async () => ipcRenderer.invoke('logs:cleanup'),
   },
   workflows: {
     list: async () => ipcRenderer.invoke('workflows:list'),
-    create: async (workflow: unknown) => ipcRenderer.invoke('workflows:create', workflow),
+    get: async (id: string) => ipcRenderer.invoke('workflows:get', { id }),
+    create: async (workflow: {
+      name: string;
+      description?: string;
+      triggerType: 'tools/list' | 'tools/call' | 'manual';
+      nodes?: any[];
+      edges?: any[];
+    }) => ipcRenderer.invoke('workflows:create', workflow),
     update: async (id: string, updates: unknown) =>
-      ipcRenderer.invoke('workflows:update', id, updates),
-    delete: async (id: string) => ipcRenderer.invoke('workflows:delete', id),
-    execute: async (id: string, context: unknown) =>
-      ipcRenderer.invoke('workflows:execute', id, context),
+      ipcRenderer.invoke('workflows:update', { id, updates }),
+    delete: async (id: string) => ipcRenderer.invoke('workflows:delete', { id }),
+    toggle: async (id: string, enabled: boolean) =>
+      ipcRenderer.invoke('workflows:toggle', { id, enabled }),
+    execute: async (id: string, context?: Record<string, unknown>) =>
+      ipcRenderer.invoke('workflows:execute', { id, context }),
+  },
+  clients: {
+    list: async () => ipcRenderer.invoke('clients:list'),
+    get: async (id: string) => ipcRenderer.invoke('clients:get', { id }),
+    create: async (client: { name: string; type: 'predefined' | 'custom' }) =>
+      ipcRenderer.invoke('clients:create', client),
+    update: async (id: string, updates: unknown) =>
+      ipcRenderer.invoke('clients:update', { id, updates }),
+    delete: async (id: string) => ipcRenderer.invoke('clients:delete', { id }),
+    generateToken: async (id: string) => ipcRenderer.invoke('clients:generate-token', { id }),
+    revokeToken: async (id: string) => ipcRenderer.invoke('clients:revoke-token', { id }),
   },
   packages: {
     list: async () => ipcRenderer.invoke('packages:list'),

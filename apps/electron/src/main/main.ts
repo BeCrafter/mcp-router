@@ -79,11 +79,16 @@ function initializeBackend(): void {
 
 function createWindow(): void {
   // 创建浏览器窗口
+  // Electron Forge 的 webpack 插件会自动注入 preload 路径到环境变量
+  // 如果没有环境变量，使用相对路径（main.js 在 .webpack/main/index.js，preload 在 .webpack/renderer/main_window/preload.js）
+  const preloadPath = process.env.MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY || 
+    path.join(__dirname, '../renderer/main_window/preload.js');
+  
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: preloadPath,
       nodeIntegration: false,
       contextIsolation: true,
       // 禁用一些不必要的功能以减少 DevTools 警告
