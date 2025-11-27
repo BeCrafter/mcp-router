@@ -1,0 +1,16 @@
+{
+  "name": "@mcp_router/tailwind-config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.js",
+  "description": "Tailwind CSS 共享配置",
+  "scripts": {
+    "build": "echo 'Tailwind config package'",
+    "typecheck": "echo 'Tailwind config package'",
+    "clean": "echo 'Tailwind config package'"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
+

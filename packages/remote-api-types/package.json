@@ -1,0 +1,12 @@
+{
+  "name": "@mcp_router/remote-api-types",
+  "version": "0.1.0",
+  "private": true,
+  "description": "远程API类型定义（预留，后续使用）",
+  "scripts": {
+    "build": "echo 'Remote API types package - reserved for future use'",
+    "typecheck": "echo 'Remote API types package - reserved for future use'",
+    "clean": "echo 'Remote API types package - reserved for future use'"
+  }
+}
+

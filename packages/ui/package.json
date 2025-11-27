@@ -1,0 +1,12 @@
+{
+  "name": "@mcp_router/ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "共享UI组件库（预留，后续使用）",
+  "scripts": {
+    "build": "echo 'UI package - reserved for future use'",
+    "typecheck": "echo 'UI package - reserved for future use'",
+    "clean": "echo 'UI package - reserved for future use'"
+  }
+}
+

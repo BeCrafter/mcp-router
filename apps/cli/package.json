@@ -1,0 +1,28 @@
+{
+  "name": "@mcp_router/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP Router CLI 工具",
+  "type": "module",
+  "bin": {
+    "mcpr": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@mcp_router/shared": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.9.2"
+  }
+}
+
